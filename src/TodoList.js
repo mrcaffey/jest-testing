@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { addItem, removeItem } from './reducers/items'
 
-class TodoList extends React.Component {
+export class TodoList extends React.Component {
   state = { name: '' , color: ''}
 
   static getDerivedStateFromProps(props, state) {
@@ -66,4 +66,4 @@ const mapStateToProps = (state) => {
   return { items: state.items }
 }
 
-export default conect (mapStateToProps) (TodoList)
+export default connect (mapStateToProps) (TodoList)

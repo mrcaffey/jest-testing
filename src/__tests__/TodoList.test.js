@@ -1,56 +1,49 @@
 import React from 'react'
-import { shallow } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 import toJson from 'enzyme-to-json'
-import TodoList from '../TodoList'
+import  ConnectedComponent, { TodoList } from '../TodoList'
+import { reduxHelper } from '../reduxTestHelper'
+const initialState = { items: [] }
 
 describe('<TodoList />', () => {
   describe('render', () => {
-    let tree
-    
+    let component
+
     beforeEach( () => {
-      let component = shallow(<TodoList />)
-      tree = toJson(component)
+      let tree = reduxHelper(ConnectedComponent, initialState).component
+      component = mount(tree)
     })
 
     it('matches a snapshot', () => {
-      const component = shallow(<TodoList />
-      const tree = toJson(component)
-      expect(tree).toMatchSnapshot()
-
+      expect(toJson(component)).toMatchSnapshot()
     })
-
+    
   })
 
-  describe('Functionality', () => {
+  describe('functionality', () => {
     let component
-    const name = 'Hello'
+    const name = 'Hello World'
 
-    beforeEach( () => {
-      component = shallow(<TodoList />)
-  })
-
-  it('updates state on change', () => {
-    const input = component.find('input')
-    input.simulate('focus')
-    input.simulate(
-      'change',
-      { target: { name: 'name', value: 'Hello' }}
-    )
-
-    expect(component.state('name')).toEqual('Hello')
-  })
-
-    it('submits the form', () => {
-      expect(component.state('items)).length.toEqual(0)
+    it('updates state on change', () => {
+      component = shallow(<TodoList items=[] />)
+      const input = component.find('input')
       input.simulate('focus')
       input.simulate(
-        'change',
-        { target: { name: 'name', value: 'Hello" }}
+        'change', 
+        { target: { name: 'name', value: name }}
       )
 
+      expect(component.state('name')).toEqual(name)
     })
 
-    const e { preventDefault: jest.fn() }
-    component.find('form').simulate('submit', e)
-    expect(component.state('items').length).toEqual(1)
+    it('submits the form', () => {
+      const test = { dispatch: jest.fn() }
+      let component = mount(<TodoList dispatch={test.dispatch} items={[]} />)
+      component.setState({ name: 'Hello' })
+      component.find('form').simulate('submit')
+      expect(test.dispatch).toHaveBeenCalledTimes(1)
+      expect(component.state('name')).equal('')
     })
+  })
+
+})
