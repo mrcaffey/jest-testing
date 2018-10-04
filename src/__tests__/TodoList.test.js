@@ -16,12 +16,41 @@ describe('<TodoList />', () => {
       const component = shallow(<TodoList />
       const tree = toJson(component)
       expect(tree).toMatchSnapshot()
+
     })
 
-    it('matches a snapshot with props', () => {
-      const component = shallow(<TodoList color='pink' />)
-        const tree = toJson(component)
-        expect(tree).toMatchSnapshot()
-      })
+  })
+
+  describe('Functionality', () => {
+    let component
+    const name = 'Hello'
+
+    beforeEach( () => {
+      component = shallow(<TodoList />)
+  })
+
+  it('updates state on change', () => {
+    const input = component.find('input')
+    input.simulate('focus')
+    input.simulate(
+      'change',
+      { target: { name: 'name', value: 'Hello' }}
+    )
+
+    expect(component.state('name')).toEqual('Hello')
+  })
+
+    it('submits the form', () => {
+      expect(component.state('items)).length.toEqual(0)
+      input.simulate('focus')
+      input.simulate(
+        'change',
+        { target: { name: 'name', value: 'Hello" }}
+      )
+
     })
-})
+
+    const e { preventDefault: jest.fn() }
+    component.find('form').simulate('submit', e)
+    expect(component.state('items').length).toEqual(1)
+    })
