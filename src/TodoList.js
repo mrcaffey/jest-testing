@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { addItem, removeItem } from './reducers/items'
 
 export class TodoList extends React.Component {
-  state = { name: '' , color: ''}
+  state = { name: '', color: '' }
 
   static getDerivedStateFromProps(props, state) {
     if (props.color && props.color !== state.color)
@@ -32,10 +32,11 @@ export class TodoList extends React.Component {
     return (
       <>
         <form onSubmit={this.handleSubmit}>
-        <label
-          style={ color ? { backgroundColor: color } : {} }
-          Add A Todo
-          ></label>
+          <label
+            style={ color ? { backgroundColor: color } : {} }
+          >
+            Add A Todo
+          </label>
           <input
             name="name"
             value={name}
@@ -44,16 +45,18 @@ export class TodoList extends React.Component {
             placeholder="Add Item"
           />
           <ul>
-            { items.map( (item, i) =>
-             <li key={i}>{item}
-             {' '}
-             <span style={{ color: 'red'}}
-             onClick={() => this.deleteItem(i)}
-             >
-             X
-             </span>
-             </li> 
-            ) 
+            { items.map( (item, i) => 
+                <li key={i}>
+                  {item}
+                  {' '}
+                  <span 
+                    style={{ color: 'red'}} 
+                    onClick={() => this.deleteItem(i)}
+                  >
+                    X
+                  </span>
+                </li> 
+              ) 
             }
           </ul>
         </form>
@@ -66,4 +69,5 @@ const mapStateToProps = (state) => {
   return { items: state.items }
 }
 
-export default connect (mapStateToProps) (TodoList)
+export default connect(mapStateToProps)(TodoList)
+
